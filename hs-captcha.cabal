@@ -1,10 +1,10 @@
 name: hs-captcha
-version: 1.0
+version: 2.0
 cabal-version: >= 1.2
 build-type: Simple
 license: BSD3
 license-file: LICENSE
-copyright: Copyright (c) 2009 Dan Knapp
+copyright: Copyright (c) 2009 Dan Knapp, 2022 Saad Rhoulam
 author: Dan Knapp
 maintainer: dankna@gmail.com
 homepage: http://www.dankna.com/software/
