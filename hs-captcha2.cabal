@@ -1,12 +1,12 @@
-name: hs-captcha
-version: 2.0
-cabal-version: >= 1.2
+name: hs-captcha2
+version: 2.1.0
+cabal-version: >= 1.8
 build-type: Simple
 license: BSD3
 license-file: LICENSE
 copyright: Copyright (c) 2009 Dan Knapp, 2022 Saad Rhoulam
-author: Dan Knapp
-maintainer: dankna@gmail.com
+author: Saad Rhoulam
+maintainer: saad@rhoulam.com
 homepage: http://www.dankna.com/software/
 bug-reports: http://www.dankna.com/issues/create/
 category: Graphics

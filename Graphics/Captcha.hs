@@ -14,6 +14,7 @@ data CaptchaConfig = CaptchaConfig
   , ccChirpVertically   :: Bool
   , ccTheme             :: Theme
   , ccStripes           :: Int
+  , ccLength            :: Int
   , ccMinChirpDepth     :: Float
   , ccMaxChirpDepth     :: Float
   , ccFontName          :: String
@@ -22,11 +23,14 @@ data CaptchaConfig = CaptchaConfig
   , ccFinalSize         :: (Int, Int)
   }
 
+-- | Use this as a starting point in your own custom configuration. Then, in
+-- future versions with new options, your code won't break, but use the defaults.
 defaultConfig = CaptchaConfig
   { ccChirpHorizontally = False
   , ccChirpVertically = True
   , ccTheme = StripedHoriz
   , ccStripes = 2
+  , ccLength = 6
   , ccMinChirpDepth = 1.0
   , ccMaxChirpDepth = 2.5
   , ccFontName = "Courier New"
@@ -39,9 +43,13 @@ alphabet :: Array Int Char
 alphabet = listArray (0, 57) "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
 main :: IO ()
-main = do
-  let cfg = defaultConfig
-  string <- makeRandomString
+main = mainCfg defaultConfig
+
+-- | This is the recommended way to test a desired captcha configuration before
+-- using it in your app.
+mainCfg :: CaptchaConfig -> IO ()
+mainCfg cfg = do
+  string <- makeRandomString $ ccLength cfg
   image <- createInitialImage cfg string
   chirpDoubleRandom cfg image
   chirpDoubleRandom cfg image
@@ -49,10 +57,11 @@ main = do
   putStrLn string
   savePngFile "captcha.png" image
 
-
+-- | Make a captcha using the provided configuration. Returns a pair: the
+-- solution, and the captcha image as a PNG bytestring.
 makeCaptcha :: CaptchaConfig -> IO (String, ByteString)
 makeCaptcha cfg = do
-  string <- makeRandomString
+  string <- makeRandomString $ ccLength cfg
   image <- createInitialImage cfg string
   chirpDoubleRandom cfg image
   chirpDoubleRandom cfg image
@@ -61,8 +70,8 @@ makeCaptcha cfg = do
   return (string, byteString)
 
 
-makeRandomString :: IO String
-makeRandomString = mapM (const makeRandomLetter) [0..5]
+makeRandomString :: Int -> IO String
+makeRandomString len = mapM (const makeRandomLetter) [1..len]
   where makeRandomLetter = do
           n <- randomRIO (0, 57)
           return $ alphabet ! n
